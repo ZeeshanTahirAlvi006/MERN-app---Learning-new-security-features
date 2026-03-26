@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../user/user_model";
+import { User } from "../user/user_model.js";
 export const authenticateUser = async (email, password) => {
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.comparePassword(password))) {
@@ -10,4 +10,4 @@ export const authenticateUser = async (email, password) => {
         role: user.role,
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
     return { user, token };
-}
+}   

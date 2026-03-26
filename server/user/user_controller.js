@@ -2,8 +2,8 @@ import { createUser, getUserById, getUserByRole } from "./user_service.js";
 
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-        const user = await createUser({ name, email, password, role });
+        const { first_name, middle_name, last_name, username, email, password, role } = req.body;
+        const user = await createUser({ first_name, middle_name, last_name, username, email, password, role });
         res.status(201).json({ message: "User Registered Successfully!" })
     } catch (error) {
         res.status(500).json({ message: error.message });

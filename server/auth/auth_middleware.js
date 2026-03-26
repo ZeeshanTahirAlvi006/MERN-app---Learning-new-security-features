@@ -1,8 +1,8 @@
 import { promisify } from "util"; //To convert callback based function to promise based function
 import jwt from "jsonwebtoken"; //To create and verify JWT tokens
-import User from "../user/user_model.js"; //To access the User model
-import AppError from "../errors/AppError.js"; //To create custom errors
-import catchAsync from "../errors/catchAsync.js"; //To handle asynchronous errors
+import { User } from "../user/user_model.js"; //To access the User model
+import AppError from "../errors/app_error.js"; //To create custom errors
+import catchAsync from "../errors/catch_async.js"; //To handle asynchronous errors
 export const protect = catchAsync(async (req, res, next) => {
     let token;
     if (req.cookies.jwt) {
@@ -20,13 +20,15 @@ export const protect = catchAsync(async (req, res, next) => {
     next();
 })
 export const restrictTo = (...roles) => {
-    if (!roles.includes(requestAnimationFrame.user.role)) {
-        return res.status(403).json({
-            message: "You do not have permission to access this resource!",
-            status: "fail",
-            statusCode: 403,
-            error: "Forbidden"
-        })
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({
+                message: "You do not have permission to access this resource!",
+                status: "fail",
+                statusCode: 403,
+                error: "Forbidden"
+            })
+        }
+        next();
     }
-    next();
-}
+} 

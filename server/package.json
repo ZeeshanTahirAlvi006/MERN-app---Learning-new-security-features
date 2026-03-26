@@ -1,0 +1,28 @@
+{
+  "name": "mern-day-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZeeshanTahirAlvi006/MERN-app---Learning-new-security-features.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ZeeshanTahirAlvi006/MERN-app---Learning-new-security-features/issues"
+  },
+  "homepage": "https://github.com/ZeeshanTahirAlvi006/MERN-app---Learning-new-security-features#readme",
+  "dependencies": {
+    "dompurify": "^3.3.3",
+    "express-rate-limit": "^8.3.1",
+    "jsdom": "^29.0.1",
+    "xss-clean": "^0.1.4"
+  }
+}
