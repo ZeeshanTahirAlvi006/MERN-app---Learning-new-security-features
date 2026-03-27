@@ -70,10 +70,14 @@ export const userSchema = new mongoose.Schema({
     }
 })
 userSchema.methods.comparePassword = async function (password) {
-    if (!this.password) {
-        throw new Error("Password field not selected! Use .select('+password')")
+    //check for password or fallback to old hashedPassword format
+    const dbPassword = this.get('password') || this.password || this.get('hashedPassword') || this.hashedPassword;
+
+    if (!dbPassword) {
+        console.error("DB User Doc:", this._doc); // Log to help debug if it fails again
+        throw new Error("Password field not selected! Use .select('+password')");
     }
-    return await bcrypt.compare(password, this.password);
+    return await bcrypt.compare(password, dbPassword);
 }
 userSchema.virtual('full_name').get(function () {
     const middle = this.middle_name ? `${this.middle_name}` : '';

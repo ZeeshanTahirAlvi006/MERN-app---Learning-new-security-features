@@ -47,6 +47,8 @@ app.use(cors()); //To enable resource sharing between frontend and backend
 
 // Custom DOMPurify Middleware to replace xss-clean
 app.use(express.json({ limit: "10kb" })) // Moved up so purifier can see the body
+app.use(express.urlencoded({ extended: true, limit: "10kb" }))
+
 app.use((req, res, next) => {
     if (req.body) {
         for (const key in req.body) {
@@ -58,10 +60,23 @@ app.use((req, res, next) => {
     next();
 });
 
+// Express 4.19+ req.query getter workaround for hpp middleware
+app.use((req, res, next) => {
+    if (req.query) {
+        const query = req.query; // Trigger the getter
+        Object.defineProperty(req, 'query', {
+            value: query,
+            writable: true,
+            configurable: true,
+            enumerable: true
+        });
+    }
+    next();
+});
+
 app.use(hpp()); //To prevent parameter pollution
 app.use(mongoSanitize()); //To prevent nosql injection
 app.use(cookieParser()); //To parse cookies
-app.use(express.urlencoded({ extended: true, limit: "10kb" }))
 app.use(express.static("public")) //To serve static files
 app.use(express.static("uploads")) //To serve uploaded files
 app.use(express.static("client/dist")) //To serve the built React app
